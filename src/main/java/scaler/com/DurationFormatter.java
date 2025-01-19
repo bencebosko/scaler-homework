@@ -16,26 +16,26 @@ public class DurationFormatter {
         if (seconds == 0) {
             return "now";
         }
-        var durationTokens = new ArrayList<String>();
+        var timeUnitTokens = new ArrayList<String>();
         var remainingSeconds = seconds;
         for (var timeUnit : TIME_UNITS) {
-            final var amount = remainingSeconds / timeUnit.getSeconds();
-            remainingSeconds = remainingSeconds - amount * timeUnit.getSeconds();
-            if (amount > 0) {
-                durationTokens.add(amount + " " + timeUnit.getPluralDisplayedName(amount));
+            final var unitAmount = remainingSeconds / timeUnit.getSeconds();
+            remainingSeconds = remainingSeconds - unitAmount * timeUnit.getSeconds();
+            if (unitAmount > 0) {
+                timeUnitTokens.add(unitAmount + " " + timeUnit.getPluralDisplayedName(unitAmount));
             }
         }
-        return getFormattedDuration(durationTokens);
+        return getFormattedDuration(timeUnitTokens);
     }
 
-    private String getFormattedDuration(List<String> durationTokens) {
-        if (durationTokens.size() == 1) {
-            return durationTokens.get(0);
+    private String getFormattedDuration(List<String> timeUnitTokens) {
+        if (timeUnitTokens.size() == 1) {
+            return timeUnitTokens.get(0);
         }
-        var formattedDurationEnd = String.join(LAST_SEPARATOR, durationTokens.subList(durationTokens.size() - 2, durationTokens.size()));
-        if (durationTokens.size() == 2) {
+        var formattedDurationEnd = String.join(LAST_SEPARATOR, timeUnitTokens.subList(timeUnitTokens.size() - 2, timeUnitTokens.size()));
+        if (timeUnitTokens.size() == 2) {
             return formattedDurationEnd;
         }
-        return String.join(SEPARATOR, durationTokens.subList(0, durationTokens.size() - 2)) + SEPARATOR + formattedDurationEnd;
+        return String.join(SEPARATOR, timeUnitTokens.subList(0, timeUnitTokens.size() - 2)) + SEPARATOR + formattedDurationEnd;
     }
 }
